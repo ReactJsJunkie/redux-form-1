@@ -1,12 +1,17 @@
 import React, { Component } from "react";
-import { submitNewUser } from "./Components/Forms/submitValidate";
+import {
+  submitNewUser,
+  toggleUserModal
+} from "./Components/Forms/submitValidate";
 import { connect } from "react-redux";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 
 import NewUserForm from "./Components/Forms/NewUserForm";
 import LoginForm from "./Components/Forms/LoginForm";
 import MainBanner from "./Components/Banner/MainBanner";
 import NavBar from "./Components/Nav/NavBar";
+import UserModal from "./Components/Modals/UserModal";
+import UserCard from "./Components/UserCard/UserCard";
 
 class App extends Component {
   state = {
@@ -21,8 +26,14 @@ class App extends Component {
   login = values => {
     alert(JSON.stringify(values, null, 2));
   };
+  openModal = () => {
+    this.props.toggleUserModal();
+    console.log(this.props.modal);
+  };
   render() {
     const { login } = this.state;
+    const { modal, users } = this.props;
+    console.log(users);
     return (
       <Container className="my-3">
         <Row>
@@ -34,29 +45,40 @@ class App extends Component {
           <Col xs={12} md>
             <MainBanner
               view={login}
-              toggle={this.toggleForm}
-              title={login ? "Login" : "New User"}
+              toggleModal={this.openModal}
+              toggleForm={this.toggleForm}
+              title={login ? "New User" : "Login"}
               message="I think you know what to do!"
             />
           </Col>
           <Col xs md>
-            {login ? (
-              <LoginForm onSubmit={this.login} />
-            ) : (
-              <NewUserForm onSubmit={this.submit} />
-            )}
+            <Card>
+              <CardBody>
+                {login ? (
+                  <NewUserForm onSubmit={this.submit} />
+                ) : (
+                  <LoginForm onSubmit={this.login} />
+                )}
+              </CardBody>
+            </Card>
           </Col>
         </Row>
+        <UserModal modal={modal} toggleModal={this.openModal}>
+          {users.map(user => (
+            <UserCard username={user.username} email={user.email} />
+          ))}
+        </UserModal>
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  users: state.users
+  users: state.users.users,
+  modal: state.users.modal
 });
 
 export default connect(
   mapStateToProps,
-  { submitNewUser }
+  { submitNewUser, toggleUserModal }
 )(App);

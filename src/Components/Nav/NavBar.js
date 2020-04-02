@@ -6,12 +6,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  NavLink
 } from "reactstrap";
 
 const NavBar = props => {
@@ -22,7 +17,7 @@ const NavBar = props => {
   return (
     <div>
       <Navbar className="mb-2" color="dark" dark expand="md">
-        <NavbarBrand href="/">React</NavbarBrand>
+        <NavbarBrand href="#">React</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
