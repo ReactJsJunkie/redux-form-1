@@ -2,17 +2,11 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { renderField } from "./renderField";
 import { asyncValidate } from "./asyncValidate";
-import { ButtonGroup, Button } from "reactstrap";
+import { ButtonGroup, Button, Alert, FormGroup } from "reactstrap";
 
-const NewUserForm = ({ handleSubmit, pristine, reset, submitting, error }) => {
+const LoginForm = ({ handleSubmit, pristine, reset, submitting, error }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <Field
-        name="username"
-        type="text"
-        component={renderField}
-        label="Username"
-      />
       <Field name="email" type="email" component={renderField} label="Email" />
       <Field
         name="password"
@@ -20,16 +14,16 @@ const NewUserForm = ({ handleSubmit, pristine, reset, submitting, error }) => {
         component={renderField}
         label="Password"
       />
-      <Field
-        name="confirmpass"
-        type="password"
-        component={renderField}
-        label="Confirm Password"
-      />
-      {error && <span style={{ color: "red" }}>{error}</span>}
+      <FormGroup>
+        {error && (
+          <Alert color="danger" className="mt-2">
+            {error}
+          </Alert>
+        )}
+      </FormGroup>
       <ButtonGroup>
         <Button color="primary" type="submit" disabled={submitting}>
-          Create User
+          Login
         </Button>
         <Button
           color="warning"
@@ -45,6 +39,6 @@ const NewUserForm = ({ handleSubmit, pristine, reset, submitting, error }) => {
 };
 
 export default reduxForm({
-  form: "newuser", // a unique identifier for this form
+  form: "login", // a unique identifier for this form
   asyncValidate
-})(NewUserForm);
+})(LoginForm);
